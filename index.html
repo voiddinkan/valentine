@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💖</title>
+
+<style>
+:root { --pink:#ff4d6d; }
+
+* { box-sizing:border-box; }
+
+body{
+  margin:0;
+  height:100vh;
+  background:linear-gradient(135deg,#fde2e4,#fadadd);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:system-ui,-apple-system;
+  overflow:hidden;
+}
+
+.card{
+  width:92vw;
+  max-width:420px;
+  background:#fff;
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 25px 45px rgba(0,0,0,.18);
+  text-align:center;
+  animation:fadeIn .8s ease;
+}
+
+img{
+  width:100%;
+  border-radius:18px;
+  margin-bottom:14px;
+}
+
+h1{
+  font-size:22px;
+  line-height:1.3;
+  margin-bottom:20px;
+  color:#222;
+}
+
+.buttons{
+  position:relative;
+  height:70px;
+}
+
+button{
+  padding:12px 26px;
+  font-size:17px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+}
+
+#yes{
+  background:var(--pink);
+  color:white;
+}
+
+#no{
+  background:#e6e6e6;
+  position:absolute;
+}
+
+.hint{
+  font-size:13px;
+  color:#777;
+  margin-top:12px;
+}
+
+#yesPage{
+  display:none;
+  animation:slideUp .8s ease;
+}
+
+/* love bubbles */
+.bubble{
+  position:fixed;
+  bottom:-40px;
+  pointer-events:none;
+  animation:floatUp linear forwards;
+}
+
+@keyframes floatUp{
+  to{ transform:translateY(-120vh); opacity:0; }
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(.97);}
+  to{opacity:1; transform:scale(1);}
+}
+
+@keyframes slideUp{
+  from{opacity:0; transform:translateY(40px);}
+  to{opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background music -->
+<audio id="bgMusic" src="music.mp3" loop></audio>
+
+<!-- PAGE 1 -->
+<div class="card" id="askPage">
+  <img src="ask.gif" alt="Valentine Ask GIF">
+  <h1>Chankuvee…<br>Will you be my Valentine ?? 😁</h1>
+
+  <div class="buttons">
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+  </div>
+
+  <div class="hint">No is acting shy 😈</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="card" id="yesPage">
+  <img src="yes.gif" alt="Valentine Yes GIF">
+  <h1>Enna baa…<br>Namukk Olichoodaaam 😌💖</h1>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const askPage = document.getElementById("askPage");
+const yesPage = document.getElementById("yesPage");
+const music = document.getElementById("bgMusic");
+
+// No button escapes
+function moveNo(){
+  noBtn.style.left = Math.random()*220 + "px";
+  noBtn.style.top  = Math.random()*40  + "px";
+}
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+
+// YES action
+yesBtn.addEventListener("click", ()=>{
+  askPage.style.display="none";
+  yesPage.style.display="block";
+  startMusic();
+  spawnBubbles();
+  loveVibration();
+});
+
+// Music fade-in
+function startMusic(){
+  music.volume = 0;
+  music.play();
+  let v = 0;
+  const fade = setInterval(()=>{
+    if(v < 0.5){
+      v += 0.02;
+      music.volume = v;
+    } else clearInterval(fade);
+  },200);
+}
+
+// Love bubbles
+function spawnBubbles(){
+  const hearts = ["💖","💗","💘","💝","💕"];
+  for(let i=0;i<30;i++){
+    const b = document.createElement("div");
+    b.className = "bubble";
+    b.innerText = hearts[Math.floor(Math.random()*hearts.length)];
+    b.style.left = Math.random()*100 + "vw";
+    b.style.fontSize = 18 + Math.random()*18 + "px";
+    b.style.animationDuration = 3 + Math.random()*3 + "s";
+    document.body.appendChild(b);
+    setTimeout(()=>b.remove(),6000);
+  }
+}
+
+// Heartbeat vibration
+function loveVibration(){
+  if("vibrate" in navigator){
+    navigator.vibrate([80,120,80,250,120]);
+  }
+}
+</script>
+
+</body>
+</html>
